@@ -90,7 +90,7 @@ public class ConsumerController {
 
             ResponseCookie cookie = ResponseCookie.from("refreshToken", tokenResponse.getRefreshToken())
                     .httpOnly(true)
-                    .secure(false) // HTTP 환경 테스트를 위해 false (운영 시 true)
+                    .secure(true) // HTTP 환경 테스트를 위해 false (운영 시 true)
                     .path("/") // api 경로에 쿠키 전송
                     .sameSite("Strict")
                     .maxAge(jwtTokenProvider.getRefreshTokenExpirationSeconds()) // RT 만료 시간
@@ -130,7 +130,7 @@ public class ConsumerController {
             // Service에서 반환된 "새로운" Refresh Token으로 쿠키 생성
             ResponseCookie cookie = ResponseCookie.from("refreshToken", tokenResponse.getRefreshToken())
                     .httpOnly(true)
-                    .secure(false) // 배포시 Https 설정 이후 ture 로 설정
+                    .secure(true) // 배포시 Https 설정 이후 ture 로 설정
                     .path("/")
                     .sameSite("Strict")
                     .maxAge(jwtTokenProvider.getRefreshTokenExpirationSeconds())
@@ -162,7 +162,7 @@ public class ConsumerController {
 
         ResponseCookie expiredCookie = ResponseCookie.from("refreshToken", "")
                 .httpOnly(true)
-                .secure(false)
+                .secure(true)
                 .path("/") // 모든 경로에서 쿠키 삭제
                 .maxAge(0) // 만료 시간을 0으로 설정하여 즉시 삭제
                 .sameSite("Strict")

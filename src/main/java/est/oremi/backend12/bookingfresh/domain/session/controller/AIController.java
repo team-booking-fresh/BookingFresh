@@ -9,6 +9,7 @@ import est.oremi.backend12.bookingfresh.domain.session.dto.*;
 import est.oremi.backend12.bookingfresh.domain.session.entity.AiRecommendation;
 import est.oremi.backend12.bookingfresh.domain.session.entity.Message;
 import est.oremi.backend12.bookingfresh.domain.session.entity.Session;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ import java.util.List;
 
 @Tag(
         name = "AI 서비스 API",
-        description = "BooKingFresh AI 세션,메시지,추천 api"
+        description = "BooKingFresh AI 세션,메시지,상품추천 api"
 )
 @RestController
 @RequiredArgsConstructor
@@ -41,11 +42,11 @@ public class AIController {
     }
 
     //    AI 세션 생성
+    @Operation(summary = "세션 생성", description = "AI 서비스 세션을 생성합니다")
     @PostMapping("/sessions")
     public ResponseEntity<AiSessionResponse> startNewSession(
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-//        Session session = aiSessionService.createSession(user);
         Consumer user = requireUser(userDetails);
 
         Session session = aiSessionService.createSession(user);
@@ -56,12 +57,11 @@ public class AIController {
     }
 
     //세션 목록 조회
+    @Operation(summary = "세션 목록 조회", description = "사용자의 AI 서비스 세션을 조회합니다")
     @GetMapping("/sessions")
     public ResponseEntity<List<AiSessionResponse>> getSessions(
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-//        List<AiSessionResponse> sessions = aiSessionService.getUserSessions(user);
-//        return ResponseEntity.ok(sessions);
         Consumer user = requireUser(userDetails);
 
         return ResponseEntity.ok(
@@ -70,13 +70,12 @@ public class AIController {
     }
 
     //단일 세션 조회
+    @Operation(summary = "단일 세션 조회", description = "유저의 특정 세션 하나를 조회합니다")
     @GetMapping("/sessions/{sessionId}")
     public ResponseEntity<AiSessionResponse> getSessionDetail(
             @PathVariable Long sessionId,
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-//        AiSessionResponse response = aiSessionService.getSessionDetail(sessionId, user);
-//        return ResponseEntity.ok(response);
         Consumer user = requireUser(userDetails);
 
         return ResponseEntity.ok(
@@ -85,13 +84,12 @@ public class AIController {
     }
 
     //메시지 전송
+    @Operation(summary = "메시지 전송", description = "LLM 시스템에 메시지를 전송하고 응답을 받습니다")
     @PostMapping("/messages")
     public ResponseEntity<AiMessageResponse> sendMessage(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @RequestBody AiMessageRequest request
     ) {
-//        AiMessageResponse response = aiMessageService.handleUserMessage(user, request);
-//        return ResponseEntity.ok(response);
         Consumer user = requireUser(userDetails);
 
         return ResponseEntity.ok(
@@ -100,13 +98,12 @@ public class AIController {
     }
 
     // 세션 내 메시지 목록 조회
+    @Operation(summary = "세션 메시지 조회", description = "세션에 속한 메시지들을 조회합니다")
     @GetMapping("/messages/{sessionId}")
     public ResponseEntity<List<AiMessageResponse>> getMessages(
             @PathVariable Long sessionId,
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-//        List<AiMessageResponse> responses = aiMessageService.getMessagesBySession(sessionId, user);
-//        return ResponseEntity.ok(responses);
         Consumer user = requireUser(userDetails);
 
         return ResponseEntity.ok(
@@ -115,12 +112,12 @@ public class AIController {
     }
 
     //세션 삭제
+    @Operation(summary = "세션 삭제", description = "한 서비스 세션을 삭제합니다")
     @DeleteMapping("/sessions/{sessionId}")
     public ResponseEntity<Void> deleteSession(
             @PathVariable Long sessionId,
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-//        aiSessionService.deleteSession(sessionId, user);
         Consumer user = requireUser(userDetails);
         aiSessionService.deleteSession(sessionId, user);
 
@@ -129,6 +126,7 @@ public class AIController {
 
 
     //AI 추천 상품 생성 API
+    @Operation(summary = "상품 추천 생성", description = "AI 응답을 기반으로 상품 추천을 생성합니다")
     @PostMapping("/recommendations")
     public ResponseEntity<List<AiRecommendationResponse>> generateRecommendations(
             @AuthenticationPrincipal CustomUserDetails userDetails,
@@ -137,7 +135,6 @@ public class AIController {
         Consumer user = requireUser(userDetails);
 
         // 세션/메시지 조회
-//        Session session = aiSessionService.findByIdAndUser(request.getSessionId(), user);
         Session session = aiSessionService.findByIdAndUser(request.getSessionId(), user);
         Message aiMsg = aiMessageService.findById(request.getMessageId());
         AiResponseData aiResponse = new AiResponseData(
@@ -159,6 +156,7 @@ public class AIController {
     }
 
     // 세션 내 시스템 추천상품 목록 조회
+    @Operation(summary = "세션 내 추천 조회", description = "특정 세션에서 발생한 상품 추천을들 조회합니다")
     @GetMapping("/recommendations/{sessionId}")
     public ResponseEntity<List<AiRecommendationResponse>> getRecommendationsBySession(
             @PathVariable Long sessionId,

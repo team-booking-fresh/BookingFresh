@@ -121,9 +121,7 @@ public class JwtTokenProvider {
         );
     }
 
-    /**
-     * 토큰 만료 시간 가져오기
-     */
+    // 토큰 만료 시간 가져오기
     public Date getExpirationDateFromToken(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(this.key)

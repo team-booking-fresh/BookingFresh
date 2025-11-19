@@ -56,6 +56,31 @@ public class ProductPageController {
 
     return "index";
   }
+  // 검색 결과 페이지
+  @GetMapping("/search")
+  public String searchProducts(
+      @RequestParam(required = false) String keyword,
+      @PageableDefault(size = 24) Pageable pageable,
+      Model model,
+      HttpServletRequest request) {
+
+    // 검색어가 없거나 비어있으면 전체 상품 페이지로 리다이렉트
+    if (keyword == null || keyword.trim().isEmpty()) {
+      return "redirect:/products";
+    }
+
+    // 검색 실행
+    Page<ProductResponse> products = productService.searchProductsByName(keyword, pageable);
+    List<Category> categories = categoryRepository.findAll();
+
+    model.addAttribute("products", products);
+    model.addAttribute("categories", categories);
+    model.addAttribute("searchKeyword", keyword); // 검색어 표시용
+    model.addAttribute("isLoggedIn", isLoggedIn(request));
+
+    return "index"; // 동일한 index.html 사용
+  }
+
 
   // 상품 상세 페이지 렌더링
   @GetMapping("/{productId}")

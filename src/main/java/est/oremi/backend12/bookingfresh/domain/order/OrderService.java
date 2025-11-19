@@ -5,6 +5,7 @@ import est.oremi.backend12.bookingfresh.domain.cart.CartItem;
 import est.oremi.backend12.bookingfresh.domain.cart.CartItemRepository;
 import est.oremi.backend12.bookingfresh.domain.cart.CartRepository;
 import est.oremi.backend12.bookingfresh.domain.consumer.entity.Consumer;
+import est.oremi.backend12.bookingfresh.domain.mail.MailService;
 import est.oremi.backend12.bookingfresh.domain.order.Order.DeliverySlot;
 import est.oremi.backend12.bookingfresh.domain.coupon.Coupon;
 import est.oremi.backend12.bookingfresh.domain.coupon.UserCoupon;
@@ -32,6 +33,7 @@ public class OrderService {
   private final CartRepository cartRepository;
   private final OrderRepository orderRepository;
   private final CartItemRepository cartItemRepository;
+  private final MailService mailService;
 
 
   //주문 생성
@@ -110,7 +112,6 @@ public class OrderService {
 
     // 사용된 쿠폰 상태 최종 변경 (isUsed = true, isApplied = false)
     for (UserCoupon uc : usedCoupons) {
-      // UserCoupon.use() 메서드 호출- isUsed=true, isApplied=false로 최종 사용 처리
       uc.use(order.getId());
     }
 
@@ -244,9 +245,18 @@ public class OrderService {
 
     // 주문 상태를 COMPLETED로 변경
     order.setStatus(Order.OrderStatus.COMPLETED);
+
+      mailService.sendOrderConfirmationMail(
+              order.getConsumer().getEmail(),
+              order.getConsumer().getNickname(),
+              consumerId,
+              orderId,
+              order.getDeliveryDate(),
+              order.getDeliverySlot()
+      );
   }
 
-  // OrderService에 추가 필요
+  // 사용자 주문 목록 조회
   @Transactional(readOnly = true)
   public List<OrderDto> getOrdersByConsumerId(Long consumerId) {
     List<Order> orders = orderRepository.findByConsumerId(consumerId);

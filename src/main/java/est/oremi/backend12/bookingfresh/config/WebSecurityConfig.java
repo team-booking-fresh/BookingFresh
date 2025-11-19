@@ -46,10 +46,7 @@ public class WebSecurityConfig {
                                         "/api/signup",   // POST /api/signup (회원가입 처리)
                                         "/api/login",     // POST /api/login (로그인 처리)
                                         // 토큰 재발급 처리,이미 AT 가 만료된 상황이기 때문에 인증 처리 없이 permit
-                                        "/api/auth/refresh",
-                                        // 테스트를 위한 임시 api
-                                        "/api/coupons/cart/item/coupon",
-                                        "/products/*/like"
+                                        "/api/auth/refresh"
                                 ).permitAll()
                                 .requestMatchers(
                                         // === Secure Pages (SSR) === 조건부 페이지 랜더링

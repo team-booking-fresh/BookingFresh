@@ -20,40 +20,6 @@ jobs:
             cd /home/ec2-user/BookingFresh
             git pull origin stage
             
-            # .env.prod 파일 생성 (운영 환경 변수)
-            cat > .env.prod << EOF
-            SPRING_PROFILES_ACTIVE=prod
-            
-            DB_URL=${{ secrets.DB_URL }}
-            DB_USERNAME=${{ secrets.DB_USERNAME }}
-            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-            
-            MAIL_HOST=${{ secrets.MAIL_HOST }}
-            MAIL_PORT=${{ secrets.MAIL_PORT }}
-            MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}
-            MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}
-            MAIL_PROTOCOL=${{ secrets.MAIL_PROTOCOL }}
-            MAIL_AUTH=${{ secrets.MAIL_AUTH }}
-            MAIL_TLS_ENABLE=${{ secrets.MAIL_TLS_ENABLE }}
-            
-            AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            AWS_REGION=${{ secrets.AWS_REGION }}
-            AWS_S3_BUCKET=${{ secrets.AWS_S3_BUCKET }}
-            
-            ALAN_API_URL=${{ secrets.ALAN_API_URL }}
-            ALAN_RESET_URL=${{ secrets.ALAN_RESET_URL }}
-            ALAN_CLIENT_ID=${{ secrets.ALAN_CLIENT_ID }}
-            
-            OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
-            OPENAI_PROJECT_ID=${{ secrets.OPENAI_PROJECT_ID }}
-            OPENAI_ORG_ID=${{ secrets.OPENAI_ORG_ID }}
-            
-            JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
-            JWT_ACCESS_EXPIRED_TIME=${{ secrets.JWT_ACCESS_EXPIRED_TIME }}
-            JWT_REFRESH_EXPIRED_TIME=${{ secrets.JWT_REFRESH_EXPIRED_TIME }}
-            EOF
-            
             ./gradlew build -x test
             sudo fuser -k -n tcp 8080 || true
             

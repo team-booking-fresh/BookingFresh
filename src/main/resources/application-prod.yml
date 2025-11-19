@@ -12,7 +12,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create  # validate에서 create로 변경 (첫 배포시만)
+      ddl-auto: validate
     defer-datasource-initialization: false  # 운영은 false
 
 server:

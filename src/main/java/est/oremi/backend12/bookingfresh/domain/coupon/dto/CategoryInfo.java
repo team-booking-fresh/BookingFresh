@@ -15,7 +15,7 @@ public class CategoryInfo {
     public static CategoryInfo from(Category category) {
         return new CategoryInfo(
                 category.getId(),
-                category.getCategoryName().name() // Enum 이름을 String으로 변환
+                category.getCategoryName().name()
         );
     }
 }

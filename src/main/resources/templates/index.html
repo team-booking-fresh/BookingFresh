@@ -11,7 +11,7 @@
   <link rel="stylesheet" th:href="@{/css/navbar.css}">
 
   <style>
-    /* (★) 페이지 헤더 (주문/쿠폰 페이지 스타일) */
+    /* 페이지 헤더 (주문/쿠폰 페이지 스타일) */
     .page-header {
       margin-bottom: 2rem;
       padding-bottom: 1rem;
@@ -22,7 +22,7 @@
       font-weight: 700;
     }
 
-    /* (★) 카테고리 탭 스타일 (쿠폰/주문 탭 스타일) */
+    /* 카테고리 탭 스타일 (쿠폰/주문 탭 스타일) */
     .category-section {
       margin-bottom: 2.5rem;
     }
@@ -54,7 +54,7 @@
       border-color: #00B992;
     }
 
-    /* (★) 상품 카드 스타일 (쿠폰/주문 카드 스타일) */
+    /* 상품 카드 스타일 (쿠폰/주문 카드 스타일) */
     .product-grid {
       display: grid;
       /* 반응형 그리드 */
@@ -113,7 +113,7 @@
       margin-top: auto; /* 가격을 카드 하단에 고정 */
     }
 
-    /* (★) 페이지네이션 스타일 (부트스트랩 활용) */
+    /* 페이지네이션 스타일 (부트스트랩 활용) */
     .pagination-section {
       margin-top: 2.5rem;
       display: flex;
@@ -138,19 +138,38 @@
 
 <main class="container main-wrapper" style="padding: 40px 15px;">
 
+  <!-- page-header 섹션 수정 -->
   <div class="page-header">
-    <h2>상품 목록</h2>
+    <h2 th:if="${searchKeyword == null}">상품 목록</h2>
+    <h2 th:if="${searchKeyword != null}">
+      '<span style="color: #00B992;">[[${searchKeyword}]]</span>' 검색 결과
+      <span style="font-size: 1rem; color: #6c757d; font-weight: 400;">
+      (총 [[${products.totalElements}]]개)
+    </span>
+    </h2>
   </div>
 
-  <section class="category-section">
-    <div class="category-list">
+  <!-- 검색 결과가 없을 때 -->
+  <div th:if="${searchKeyword != null && products.content.isEmpty()}"
+       style="text-align: center; padding: 80px 20px; background-color: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); margin-bottom: 2rem;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="#6c757d" viewBox="0 0 16 16" style="margin-bottom: 20px;">
+      <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.085.122l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.122-.085zm-5.442 1.398a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11"/>
+    </svg>
+    <h3 style="color: #6c757d; margin-bottom: 16px;">'[[${searchKeyword}]]'에 대한 검색 결과가 없습니다</h3>
+    <p style="color: #6c757d; margin-bottom: 24px;">다른 검색어로 다시 시도해보세요</p>
+    <a href="/products" style="display: inline-block; padding: 12px 32px; background-color: #00B992; color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">
+      전체 상품 보기
+    </a>
+  </div>
 
+  <!-- 카테고리 섹션 수정 (검색 시에는 카테고리 필터 숨김) -->
+  <section class="category-section" th:if="${searchKeyword == null}">
+    <div class="category-list">
       <a th:href="@{/products}"
          class="category-item"
          th:classappend="${selectedCategoryId == null} ? 'active' : ''">
         전체
       </a>
-
       <a th:each="category : ${categories}"
          th:href="@{/products(categoryId=${category.id})}"
          class="category-item"
@@ -159,6 +178,16 @@
       </a>
     </div>
   </section>
+
+  <!-- 검색 결과일 때 검색어 초기화 버튼 -->
+  <div th:if="${searchKeyword != null}" style="margin-bottom: 1.5rem;">
+    <a href="/products" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background-color: #f8f9fa; color: #495057; text-decoration: none; border-radius: 8px; font-size: 0.9rem; border: 1px solid #dee2e6; transition: all 0.3s;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+      </svg>
+      검색 초기화
+    </a>
+  </div>
 
   <section class="product-list-section">
     <div class="product-grid">

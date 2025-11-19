@@ -17,9 +17,14 @@
 
             <div class="collapse navbar-collapse" id="navbarContent">
 
-                <form class="d-flex flex-grow-1 search-wrapper" role="search" onsubmit="return false;">
+                <form class="d-flex flex-grow-1 search-wrapper" role="search" id="searchForm" method="get" action="/products/search">
                     <div class="input-group">
-                        <input class="form-control clean-search-input" type="search" placeholder="신선한 상품을 검색하세요" aria-label="Search">
+                        <input class="form-control clean-search-input"
+                               type="search"
+                               name="keyword"
+                               id="searchInput"
+                               placeholder="검색어를 입력하세요"
+                               aria-label="Search">
                         <button class="btn clean-search-btn" type="submit">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.085.122l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.122-.085zm-6.5 1.352a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11"/>
@@ -63,6 +68,25 @@
         </div>
     </nav>
 </header>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchForm = document.getElementById('searchForm');
+        const searchInput = document.getElementById('searchInput');
 
+        if (searchForm && searchInput) {
+            searchForm.addEventListener('submit', function(e) {
+                const keyword = searchInput.value.trim();
+
+                // 빈 검색어 방지
+                if (keyword === '') {
+                    e.preventDefault();
+                    alert('검색어를 입력해주세요.');
+                    searchInput.focus();
+                    return false;
+                }
+            });
+        }
+    });
+</script>
 </body>
 </html>

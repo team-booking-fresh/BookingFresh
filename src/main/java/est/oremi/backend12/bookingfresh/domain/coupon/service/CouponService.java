@@ -118,34 +118,10 @@ public class CouponService {
                             .distinct()
                             .toList();
 
-                    // 최종 UserCouponResponse DTO 생성
                     return UserCouponResponse.from(userCoupon, categories);
                 })
                 .toList();
     }
-
-/*
-    @Transactional(readOnly = true)
-    public List<UserCouponResponse> findAllUserCoupons(Long consumerId) {
-        // 해당 사용자의 모든 UserCoupon 조회 (Coupon 정보 패치 조인)
-        List<UserCoupon> userCoupons = userCouponRepository.findByConsumerIdWithCoupon(consumerId);
-
-        return userCoupons.stream()
-                .filter(userCoupon -> userCoupon.getCoupon().getIsActive())
-
-                .map(userCoupon -> {
-                    Coupon coupon = userCoupon.getCoupon();
-                    List<CategoryCoupon> categoryCoupons = categoryCouponRepository.findByCouponId(coupon.getId());
-                    List<CategoryInfo> categories = categoryCoupons.stream()
-                            .map(CategoryCoupon::getCategory)
-                            .map(CategoryInfo::from)
-                            .distinct()
-                            .toList();
-                    return UserCouponResponse.from(userCoupon, categories);
-                })
-                .toList();
-    }
-*/
 
     @Transactional
     public void issueAllActiveCouponsToNewConsumer(Consumer newConsumer) {
@@ -165,39 +141,13 @@ public class CouponService {
                         .build())
                 .toList();
 
-        // UserCoupon 저장 (새 사용자에게 쿠폰 발급)
+        // UserCoupon 저장 새 - 사용자에게 쿠폰 발급
         userCouponRepository.saveAll(userCouponsToSave);
 
         System.out.println("회원 ID " + newConsumer.getId() + "에게 " + userCouponsToSave.size() + "개의 초기 쿠폰이 발급되었습니다.");
     }
 
-
     private final ProductRepository productRepository;
-    // 사용자가 소유하고 있으며, 상품에 적용 가능(카테고리)한 모든 쿠폰 조회
-/*
-    @Transactional(readOnly = true)
-    public List<UserCouponResponse> findApplicableCouponsForUserAndProduct(Long consumerId, Long productId) {
-
-        // 상품 ID로 카테고리 ID를 추출
-        Product product = productRepository.findByIdWithCategory(productId)
-                .orElseThrow(() -> new NotFoundException("상품 ID " + productId + "를 찾을 수 없습니다."));
-
-        Long productCategoryId = product.getCategory().getId();
-
-        // 해당 사용자의 모든 유효한 UserCoupon 조회
-        List<UserCoupon> userCoupons = userCouponRepository.findByConsumerIdWithCoupon(consumerId);
-
-        // 필터링 및 최종 DTO 변환
-        return userCoupons.stream()
-                // 사용하지 않았고, 쿠폰 자체가 활성화된 경우만 필터링
-                .filter(uc -> !uc.getIsUsed() && uc.getCoupon().getIsActive())
-                // 해당 쿠폰이 현재 상품의 카테고리에 적용 가능한지 확인
-                .filter(uc -> isCouponApplicableToCategory(uc.getCoupon().getId(), productCategoryId))
-                // DTO 변환
-                .map(uc -> convertUserCouponToResponse(uc))
-                .toList();
-    }
-*/
 
     // 쿠폰이 카테고리에 적용 가능한지 확인하는 도우미 메소드
     @Transactional(readOnly = true)
@@ -214,7 +164,7 @@ public class CouponService {
     protected UserCouponResponse convertUserCouponToResponse(UserCoupon userCoupon) {
         Coupon coupon = userCoupon.getCoupon();
 
-        // 이 쿠폰이 적용 가능한 '전체' 카테고리 목록 조회
+        // 이 쿠폰이 적용 가능한 전체 카테고리 목록 조회
         List<CategoryCoupon> allMappings = categoryCouponRepository.findByCouponId(coupon.getId());
 
         List<CategoryInfo> categories = allMappings.stream()
@@ -262,15 +212,12 @@ public class CouponService {
 
         Coupon coupon = userCoupon.getCoupon();
 
-        // String을 BigDecimal로 변환하여 최종 가격 계산
         BigDecimal calculatedDiscountAmount = new BigDecimal(calculatedDiscountAmountStr);
         BigDecimal finalPrice = productPrice.subtract(calculatedDiscountAmount);
 
-        // 최종 가격도 String으로 변환
         String finalPriceStr = finalPrice.toPlainString();
         String minOrderAmountStr = coupon.getMinOrderAmount();
 
-        // 카테고리 정보 조회
         List<CategoryInfo> categories = getApplicableCategoryInfos(coupon.getId());
 
         // 최종 DTO 반환 (minOrderAmount는 DTO 내부에서 Coupon 엔티티를 통해 가져감)
@@ -330,7 +277,7 @@ public class CouponService {
 
     // CategoryInfo List 조회
     private List<CategoryInfo> getApplicableCategoryInfos(Long couponId) {
-        // 이 쿠폰이 적용 가능한 '전체' 카테고리 목록 조회
+        // 이 쿠폰이 적용 가능한 전체 카테고리 목록 조회
         List<CategoryCoupon> allMappings = categoryCouponRepository.findByCouponId(couponId);
         return allMappings.stream()
                 .map(CategoryCoupon::getCategory)

@@ -27,7 +27,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                 .filter(Objects::nonNull)
                 .map(String::trim)
                 .filter(s -> !s.isEmpty())
-                // ⭐ 여기서 길이 필터링
+                // 여기서 길이 필터링
                 .filter(k -> k.length() >= 2)   // 필요하면 allow-list 예외 추가
                 .flatMap(k -> findByKeyword(k).stream())
                 .distinct()

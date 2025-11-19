@@ -323,7 +323,7 @@
       // 주문 ID 가져오기 (Thymeleaf에서 전달)
       const orderId = [[${orderId}]];
 
-      // 1. 주문 정보 로드
+      // 주문 정보 로드
       const orderRes = await fetchWithAuth(`/orders/${orderId}`, { method: "GET" });
       if (orderRes.ok) {
         orderData = await orderRes.json();
@@ -343,7 +343,7 @@
         return;
       }
 
-      // 2. 사용자 정보 로드 (Consumer 정보)
+      // 사용자 정보 로드 (Consumer 정보)
       const consumerRes = await fetchWithAuth("/api/me", { method: "GET" });
       if (consumerRes.ok) {
         const consumer = await consumerRes.json();
@@ -353,7 +353,7 @@
         document.getElementById("email").value = consumer.email || "";
       }
 
-      // 3. 배송 날짜 최소값 설정 (주문일 +1일)
+      // 배송 날짜 최소값 설정 (주문일 +1일)
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
       const minDate = tomorrow.toISOString().split('T')[0];

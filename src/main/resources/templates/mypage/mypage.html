@@ -303,7 +303,7 @@
     // 쿠폰 개수 로드
     async function loadCouponCount() {
         try {
-            // (★수정★) URL 변경
+            // URL 변경
             const response = await fetchWithAuth(`/api/coupons/my`, {
                 method: 'GET'
             });
@@ -321,7 +321,7 @@
 
 
     // 주문 내역 로드
-    async function loadRecentOrders() { // (1) consumerId 파라미터 제거
+    async function loadRecentOrders() {
         try {
             const response = await fetchWithAuth(`/orders/my`, {
                 method: 'GET'

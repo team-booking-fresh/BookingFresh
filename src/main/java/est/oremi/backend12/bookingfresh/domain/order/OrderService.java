@@ -112,7 +112,6 @@ public class OrderService {
 
     // 사용된 쿠폰 상태 최종 변경 (isUsed = true, isApplied = false)
     for (UserCoupon uc : usedCoupons) {
-      // UserCoupon.use() 메서드 호출- isUsed=true, isApplied=false로 최종 사용 처리
       uc.use(order.getId());
     }
 
@@ -257,7 +256,7 @@ public class OrderService {
       );
   }
 
-  // OrderService에 추가 필요
+  // 사용자 주문 목록 조회
   @Transactional(readOnly = true)
   public List<OrderDto> getOrdersByConsumerId(Long consumerId) {
     List<Order> orders = orderRepository.findByConsumerId(consumerId);

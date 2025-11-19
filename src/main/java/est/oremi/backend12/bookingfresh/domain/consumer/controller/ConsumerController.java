@@ -4,6 +4,8 @@ import est.oremi.backend12.bookingfresh.config.jwt.JwtTokenProvider;
 import est.oremi.backend12.bookingfresh.domain.consumer.Service.ConsumerService;
 import est.oremi.backend12.bookingfresh.domain.consumer.dto.*;
 import est.oremi.backend12.bookingfresh.domain.consumer.entity.CustomUserDetails;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,42 +23,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+
+@Tag(
+        name = "사용자 API",
+        description = "회원가입, 로그인, 로그아웃과 사용자 정보 조회 API"
+)
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class ConsumerController {
     private final ConsumerService consumerService;
     private final JwtTokenProvider jwtTokenProvider;
-/*
-    @PostMapping("/signup")
-    public ResponseEntity<ConsumerResponse> signup(@Valid @RequestBody AddConsumerRequest request,
-                                                   BindingResult bindingResult) {
-        // DTO 유효성 검사 (정규식, @NotBlank 등) 실패 시 처리
-        if (bindingResult.hasErrors()) {
-            String errorMsg = bindingResult.getFieldError().getDefaultMessage();
-            // 에러 메시지와 함께 400 Bad Request 반환
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ConsumerResponse(errorMsg));
-        }
 
-        try {
-            // Service 로직 호출 (비밀번호 일치, 중복 확인 포함)
-            ConsumerResponse response = consumerService.signUp(request);
-            // 성공 시 201 Created 반환
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
-
-        } catch (IllegalArgumentException e) {
-            // 비즈니스 로직 예외 처리 (비밀번호 불일치, 중복 이메일/닉네임 등)
-            // 에러 메시지와 함께 400 Bad Request 반환
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ConsumerResponse(e.getMessage()));
-
-        } catch (Exception e) {
-            // 기타 서버 오류 처리
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ConsumerResponse("서버 오류가 발생했습니다."));
-        }
-
-    }
-*/
-
+    @Operation(summary = "회원가입",description = "입력 데이터를 바탕으로 사용자 정보 조회, 유효성 검사 실시")
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody AddConsumerRequest request,
                                     BindingResult bindingResult) {
@@ -78,7 +57,6 @@ public class ConsumerController {
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
         } catch (IllegalArgumentException e) {
-            // 비즈니스 로직 오류는 message로 반환
             Map<String, String> errorResponse = new HashMap<>();
             errorResponse.put("message", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
@@ -90,13 +68,13 @@ public class ConsumerController {
         }
     }
 
+    @Operation(summary = "로그인",description = "email 과 password 를 입력받고, 유효성 인증이후 로그인")
     @PostMapping("/login")
     public ResponseEntity<?> login(
             @Valid @RequestBody LoginRequest request,
             BindingResult bindingResult,
-            HttpServletResponse response) { // Refresh Token을 HttpOnly Cookie로 설정하기위한 HttpServletResponse
+            HttpServletResponse response) {
 
-        // 유효성 검사 실패 시 필드별 에러 반환
         if (bindingResult.hasErrors()) {
             List<FieldErrorResponse> errors = bindingResult.getFieldErrors().stream()
                     .map(error -> new FieldErrorResponse(error.getField(), error.getDefaultMessage()))
@@ -110,7 +88,6 @@ public class ConsumerController {
         try {
             TokenResponse tokenResponse = consumerService.login(request);
 
-            // Refresh Token을 HttpOnly 쿠키로 변환하여 응답 헤더에 추가
             ResponseCookie cookie = ResponseCookie.from("refreshToken", tokenResponse.getRefreshToken())
                     .httpOnly(true)
                     .secure(false) // HTTP 환경 테스트를 위해 false (운영 시 true)
@@ -177,14 +154,12 @@ public class ConsumerController {
         }
     }
 
-    // 로그아웃 API: Refresh Token DB 삭제 및 쿠키 무효화
+    @Operation(summary = "로그아웃",description = "Refresh Token DB 삭제 및 쿠키 무효화")
     @PostMapping("/auth/logout")
     public ResponseEntity<String> logout(@CookieValue(name = "refreshToken", required = false) String refreshToken) {
 
-        // 간단하게 쿠키 자체를 조회해 삭제
         consumerService.logout(refreshToken);
 
-        // 브라우저의 Refresh Token 쿠키를 만료시켜 삭제
         ResponseCookie expiredCookie = ResponseCookie.from("refreshToken", "")
                 .httpOnly(true)
                 .secure(false)
@@ -214,17 +189,12 @@ public class ConsumerController {
         return ResponseEntity.ok(updatedConsumer);
     }
 
-    // 사용자 정보 조회
+    @Operation(summary = "사용자 정보 조회",description = "사용자 정보 조회")
     @GetMapping("/me")
     public ResponseEntity<ConsumerResponse> getConsumerInfo(
-            // @AuthenticationPrincipal로 현재 Security Context에 저장된 사용자 정보(CustomUserDetails)를 주입받음
             @AuthenticationPrincipal CustomUserDetails customUserDetails) {
-
-        // CustomUserDetails가 null이면 인증 실패이므로, Security Filter에서 처리됨 (403 또는 401).
-        // 여기까지 도달했다는 것은 인증되었다는 의미입니다.
         Long consumerId = customUserDetails.getId();
 
-        // 서비스 메서드 호출
         ConsumerResponse consumerInfo = consumerService.getConsumerInfo(consumerId);
 
         return ResponseEntity.ok(consumerInfo);

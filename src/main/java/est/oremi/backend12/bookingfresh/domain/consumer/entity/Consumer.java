@@ -63,9 +63,7 @@ public class Consumer {
   }
 
 
-  /**
-   * 사용자 닉네임 및 주소 정보 업데이트
-   */
+  // 사용자 닉네임 및 주소 정보 업데이트
   public void updateInfo(String nickname, String address, String detailAddress) {
     if (nickname != null && !nickname.trim().isEmpty()) {
       this.nickname = nickname;
@@ -73,14 +71,12 @@ public class Consumer {
     if (address != null && !address.trim().isEmpty()) {
       this.address = address;
     }
-    if (detailAddress != null) { // 상세 주소는 null 허용 가능
+    if (detailAddress != null) {
       this.detailAddress = detailAddress;
     }
   }
 
-  /**
-   * 사용자 비밀번호 업데이트
-   */
+  // 사용자 비밀번호 업데이트
   public void updatePassword(String encodedNewPassword) {
     if (encodedNewPassword == null || encodedNewPassword.trim().isEmpty()) {
       throw new IllegalArgumentException("암호화된 새 비밀번호는 null이 될 수 없습니다.");

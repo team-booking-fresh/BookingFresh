@@ -46,12 +46,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             filterChain.doFilter(request, response);
         } catch (IOException e) {
-            // IOException 발생 시, ServletException으로 래핑하여 던집니다.
             throw new ServletException(e);
         }
     }
 
-    //Request Header에서 토큰 정보 추출 / "Authorization: Bearer {token}" 형태
+    // Request Header에서 토큰 정보 추출 / "Authorization: Bearer {token}" 형태
     private String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
 

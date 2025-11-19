@@ -322,14 +322,12 @@
     }
   }
 
-  // (★수정★) DTO 필드명에 맞게 수정
-  // 쿠폰 카드 HTML 생성
+  //  DTO 필드명에 맞게 수정
   function createCouponCard(coupon) {
     const isUsed = coupon.isUsed;
     const usedClass = isUsed ? 'used' : '';
     const usedBadge = isUsed ? '<span class="used-badge">사용완료</span>' : '';
 
-    // (★수정★) 'categories' -> 'applicableCategories'
     const categories = coupon.applicableCategories && coupon.applicableCategories.length > 0
             ? coupon.applicableCategories.map(cat =>
                     `<span class="category-badge">${cat.name}</span>`
@@ -360,7 +358,7 @@
             `;
   }
 
-  // (★추가★) 카테고리 필터 드롭다운 채우기 함수
+  // 카테고리 필터 드롭다운 채우기 함수
   function populateCategoryFilter(coupons) {
     const filterSelect = document.getElementById('category-filter');
     const categories = new Map(); // 중복 제거를 위해 Map 사용
@@ -399,33 +397,29 @@
     });
   }
 
-
-  // (★수정★) 2단계 필터링 적용
   // 쿠폰 목록 렌더링
   function renderCoupons(filter = 'all') {
     const couponList = document.getElementById('coupon-list');
 
-    // (추가) 카테고리 필터의 현재 값 읽기
     const selectedCategoryId = document.getElementById('category-filter').value;
 
     let filteredCoupons = allCoupons;
 
-    // 1단계: 사용 여부 필터링 (탭)
+    // 사용 여부 필터링
     if (filter === 'available') {
       filteredCoupons = allCoupons.filter(c => !c.isUsed);
     } else if (filter === 'used') {
       filteredCoupons = allCoupons.filter(c => c.isUsed);
     }
 
-    // 2단계: 카테고리 필터링 (드롭다운)
+    // 카테고리 필터링
     if (selectedCategoryId !== 'all') {
       filteredCoupons = filteredCoupons.filter(coupon => {
         const categories = coupon.applicableCategories;
         if (selectedCategoryId === 'global') {
-          // '전체 상품' 쿠폰 (카테고리 목록이 비어있는 쿠폰)
           return !categories || categories.length === 0;
         }
-        // 특정 카테고리 ID가 포함되어 있는지 확인
+
         return categories && categories.some(cat => cat.id == selectedCategoryId);
       });
     }
@@ -466,7 +460,6 @@
     document.getElementById('used-coupons').textContent = used;
   }
 
-  // (★수정★) populateCategoryFilter 호출 추가
   // 사용자 쿠폰 로드
   async function loadUserCoupons() {
     try {
@@ -476,10 +469,10 @@
 
       allCoupons = await couponsResponse.json();
 
-      // (추가) 카테고리 필터 채우기
+      // 카테고리 필터 채우기
       populateCategoryFilter(allCoupons);
 
-      // 3. 렌더링 및 통계 업데이트
+      // 렌더링 및 통계 업데이트
       renderCoupons(currentFilter);
       updateStats();
 
@@ -507,7 +500,7 @@
     });
   });
 
-  // (★추가★) 카테고리 필터 이벤트 리스너
+  // 카테고리 필터 이벤트 리스너
   document.getElementById('category-filter').addEventListener('change', function() {
     // 탭 필터(currentFilter)는 그대로 둔 채 렌더링만 다시 호출
     renderCoupons(currentFilter);

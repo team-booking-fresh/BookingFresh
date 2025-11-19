@@ -1,9 +1,7 @@
 import { requestLogout } from '/js/common-api.js';
 
 
-/**
- * 페이지가 처음 로드될 때 메인 인증 로직 실행 (★수정★)
- */
+// 페이지가 처음 로드될 때 메인 인증 로직 실행
 document.addEventListener('DOMContentLoaded', async () => {
 
     const logoutBtn = document.getElementById('logout-btn');

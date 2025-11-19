@@ -11,7 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 public class CouponRegistrationRequest {
 
-    // Coupon 엔티티 필드와 1:1 매핑
     private String code;
     private String name;
     private String discountType;

@@ -12,7 +12,6 @@
     <link rel="stylesheet" th:href="@{/css/navbar.css}">
 
     <style>
-        /* (★) mypage.html 스타일 적용 */
         .mypage-container {
             max-width: 900px;
             margin: 40px auto;
@@ -30,7 +29,6 @@
             font-weight: 700;
         }
 
-        /* (★) index.html 상품 카드 스타일 적용 */
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -95,7 +93,6 @@
             margin-top: auto;
         }
 
-        /* (★) 로딩 및 빈 상태 (orders.html 스타일) */
         .status-message {
             text-align: center;
             padding: 4rem;
@@ -141,9 +138,8 @@
 <script type="module">
     import { fetchWithAuth } from '/js/common-api.js';
 
-    // (★) 상품 카드 HTML 생성 함수 (index.html 스타일)
+    // 상품 카드 HTML 생성 함수
     function createProductCard(product) {
-        // ProductResponse DTO의 필드명을 사용 (id, photoUrl, name, weightPieces, price)
         const productUrl = `/products/${product.id}`;
         const imageUrl = product.photoUrl || 'https://via.placeholder.com/300x200';
         const weight = product.weightPieces || ''; // 중량 정보가 없을 경우 대비
@@ -173,10 +169,9 @@
 
             const products = await response.json();
 
-            loadingSpinner.remove(); // 로딩 스피너 제거
+            loadingSpinner.remove();
 
             if (products.length === 0) {
-                // (★) 빈 상태 (orders.html 스타일)
                 container.innerHTML = `
                     <div class="status-message">
                         <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="#dee2e6" viewBox="0 0 16 16">

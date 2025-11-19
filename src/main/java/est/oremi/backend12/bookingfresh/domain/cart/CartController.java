@@ -2,6 +2,7 @@ package est.oremi.backend12.bookingfresh.domain.cart;
 
 import est.oremi.backend12.bookingfresh.domain.cart.dto.CartDto;
 import est.oremi.backend12.bookingfresh.domain.consumer.entity.CustomUserDetails;
+import est.oremi.backend12.bookingfresh.domain.coupon.dto.CartDetailResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -72,6 +73,14 @@ public class CartController {
     Long consumerId = user.getId();
     cartService.clearCart(consumerId);
     return ResponseEntity.ok().build();
+  }
+
+  //  장바구니 페이지용 상세 조회
+  @Operation(summary = "장바구니 세부 조회",description = "로그인된 사용자의 장바구니를 장바구니 ID, 장바구니 목록 ID, 상품 ID 를 조회합니다.")
+  @GetMapping("/detail")
+  public ResponseEntity<CartDetailResponse> getCartDetails(@AuthenticationPrincipal CustomUserDetails user) {
+    Long consumerId = user.getId();
+    return ResponseEntity.ok(cartService.getCartDetails(consumerId));
   }
 }
 

@@ -10,138 +10,36 @@
   <link rel="stylesheet" th:href="@{/css/navbar.css}">
 
   <style>
-    /* 페이지 헤더 스타일 */
-    .page-header {
-      margin-bottom: 2rem;
-      padding-bottom: 1rem;
-      border-bottom: 2px solid #00B992;
-    }
-    .page-header h2 {
-      color: #343a40;
-      font-weight: 700;
-    }
+    /* (기존 스타일 유지) */
+    .page-header { margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid #00B992; }
+    .page-header h2 { color: #343a40; font-weight: 700; }
+    .cart-container { max-width: 1200px; margin: 0 auto; padding: 40px 15px; display: flex; gap: 32px; align-items: flex-start; }
+    .cart-items { flex: 3; display: flex; flex-direction: column; gap: 16px; }
+    .cart-card { display: flex; align-items: center; background-color: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); padding: 20px; border: 1px solid #e9ecef; transition: all 0.3s; }
+    .cart-card:hover { box-shadow: 0 4px 12px rgba(0, 185, 146, 0.15); border-color: #00B992; }
+    .cart-card img { width: 120px; height: 120px; object-fit: cover; border-radius: 8px; margin-right: 24px; }
+    .cart-info { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+    .cart-info h3 { font-size: 1.1rem; font-weight: 600; margin: 0; color: #343a40; }
+    .cart-info .product-weight { font-size: 0.9rem; color: #6c757d; }
+    .cart-info .product-price { font-size: 1.1rem; font-weight: 700; color: #00B992; margin-top: 4px; }
 
-    /* 장바구니 컨테이너 */
-    .cart-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 40px 15px;
-      display: flex;
-      gap: 32px;
-      align-items: flex-start;
-    }
+    /* 수량 조절 스타일 유지 */
+    .cart-actions { display: flex; align-items: center; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    .quantity-control { display: flex; align-items: center; gap: 8px; border: 1px solid #dee2e6; border-radius: 8px; padding: 4px 8px; background-color: #f8f9fa; }
+    .quantity-btn { background-color: transparent; border: none; color: #00B992; font-size: 1.2rem; font-weight: 600; cursor: pointer; padding: 4px 8px; transition: all 0.3s; line-height: 1; }
+    .quantity-btn:hover { background-color: #e7f8f5; border-radius: 4px; }
+    .quantity-input { width: 50px; text-align: center; border: none; background: transparent; font-weight: 600; font-size: 1rem; color: #343a40; }
 
-    /* 장바구니 아이템 영역 */
-    .cart-items {
-      flex: 3;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
+    .apply-button { padding: 6px 16px; background-color: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: all 0.3s; }
+    .apply-button:hover { background-color: #5a6268; }
 
-    /* 장바구니 카드 */
-    .cart-card {
-      display: flex;
-      align-items: center;
-      background-color: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-      padding: 20px;
-      border: 1px solid #e9ecef;
-      transition: all 0.3s;
-    }
-    .cart-card:hover {
-      box-shadow: 0 4px 12px rgba(0, 185, 146, 0.15);
-      border-color: #00B992;
-    }
+    .delete-button { padding: 6px 16px; background-color: #dc3545; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: all 0.3s; }
+    .delete-button:hover { background-color: #c82333; transform: translateY(-1px); }
 
-    .cart-card img {
-      width: 120px;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 8px;
-      margin-right: 24px;
-    }
-
-    .cart-info {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .cart-info h3 {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin: 0;
-      color: #343a40;
-    }
-
-    .cart-info .product-weight {
-      font-size: 0.9rem;
-      color: #6c757d;
-    }
-
-    .cart-info .product-price {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #00B992;
-      margin-top: 4px;
-    }
-
-    /* 수량 조절 */
-    .cart-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .quantity-control {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border: 1px solid #dee2e6;
-      border-radius: 8px;
-      padding: 4px 8px;
-      background-color: #f8f9fa;
-    }
-
-    .quantity-btn {
-      background-color: transparent;
-      border: none;
-      color: #00B992;
-      font-size: 1.2rem;
-      font-weight: 600;
-      cursor: pointer;
-      padding: 4px 8px;
-      transition: all 0.3s;
-      line-height: 1;
-    }
-
-    .quantity-btn:hover {
-      background-color: #e7f8f5;
-      border-radius: 4px;
-    }
-
-    .quantity-btn:disabled {
-      color: #adb5bd;
-      cursor: not-allowed;
-    }
-
-    .quantity-input {
-      width: 50px;
-      text-align: center;
-      border: none;
-      background: transparent;
-      font-weight: 600;
-      font-size: 1rem;
-      color: #343a40;
-    }
-
-    .apply-button {
+    /* [추가] 쿠폰 버튼 및 정보 스타일 */
+    .coupon-btn {
       padding: 6px 16px;
-      background-color: #00B992;
+      background-color: #00B992; /* 메인 컬러 */
       color: white;
       border: none;
       border-radius: 6px;
@@ -149,145 +47,46 @@
       font-size: 0.9rem;
       font-weight: 600;
       transition: all 0.3s;
-    }
-
-    .apply-button:hover {
-      background-color: #009977;
-      transform: translateY(-1px);
-    }
-
-    .delete-button {
-      padding: 6px 16px;
-      background-color: #dc3545;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.9rem;
-      font-weight: 600;
-      transition: all 0.3s;
-    }
-
-    .delete-button:hover {
-      background-color: #c82333;
-      transform: translateY(-1px);
-    }
-
-    /* 주문 요약 */
-    .cart-summary {
-      flex: 1;
-      position: sticky;
-      top: 20px;
-      background-color: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-      padding: 24px;
-      border: 1px solid #e9ecef;
-    }
-
-    .cart-summary h3 {
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin-bottom: 1.5rem;
-      color: #343a40;
-      padding-bottom: 0.75rem;
-      border-bottom: 2px solid #f8f9fa;
-    }
-
-    .summary-row {
       display: flex;
-      justify-content: space-between;
-      margin-bottom: 12px;
-      font-size: 0.95rem;
-      color: #495057;
+      align-items: center;
+      gap: 4px;
     }
+    .coupon-btn:hover { background-color: #009977; transform: translateY(-1px); }
 
-    .summary-row.total {
-      margin-top: 16px;
-      padding-top: 16px;
-      border-top: 2px solid #dee2e6;
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: #00B992;
-    }
-
-    .checkout-button {
-      width: 100%;
-      padding: 14px;
-      background-color: #00B992;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-top: 20px;
-      transition: all 0.3s;
-    }
-
-    .checkout-button:hover {
-      background-color: #009977;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 185, 146, 0.3);
-    }
-
-    .checkout-button:disabled {
-      background-color: #6c757d;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    /* 빈 장바구니 */
-    .empty-cart {
-      text-align: center;
-      padding: 80px 20px;
-      background-color: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    }
-
-    .empty-cart h3 {
-      color: #6c757d;
-      margin-bottom: 16px;
-    }
-
-    .empty-cart a {
+    .applied-coupon-badge {
       display: inline-block;
-      padding: 12px 32px;
-      background-color: #00B992;
-      color: white;
-      text-decoration: none;
-      border-radius: 8px;
+      background-color: #e7f8f5;
+      color: #00B992;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.85rem;
       font-weight: 600;
-      transition: all 0.3s;
+      margin-bottom: 4px;
+      border: 1px solid #00B992;
     }
 
-    .empty-cart a:hover {
-      background-color: #009977;
-      transform: translateY(-2px);
+    /* [추가] 모달 내 쿠폰 리스트 스타일 */
+    .coupon-option {
+      cursor: pointer;
+      transition: background-color 0.2s;
     }
+    .coupon-option:hover { background-color: #f8f9fa; }
+    .coupon-option.active { background-color: #e7f8f5; border-color: #00B992; }
 
-    /* 반응형 */
-    @media (max-width: 992px) {
-      .cart-container {
-        flex-direction: column;
-      }
-      .cart-summary {
-        position: static;
-        width: 100%;
-      }
-    }
-
-    @media (max-width: 576px) {
-      .cart-card {
-        flex-direction: column;
-        text-align: center;
-      }
-      .cart-card img {
-        margin-right: 0;
-        margin-bottom: 16px;
-      }
-    }
+    /* (기존 요약/반응형 스타일 유지) */
+    .cart-summary { flex: 1; position: sticky; top: 20px; background-color: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); padding: 24px; border: 1px solid #e9ecef; }
+    .cart-summary h3 { font-size: 1.2rem; font-weight: 600; margin-bottom: 1.5rem; color: #343a40; padding-bottom: 0.75rem; border-bottom: 2px solid #f8f9fa; }
+    .summary-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.95rem; color: #495057; }
+    .summary-row.total { margin-top: 16px; padding-top: 16px; border-top: 2px solid #dee2e6; font-size: 1.2rem; font-weight: 700; color: #00B992; }
+    .checkout-button { width: 100%; padding: 14px; background-color: #00B992; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 1.1rem; font-weight: 600; margin-top: 20px; transition: all 0.3s; }
+    .checkout-button:hover { background-color: #009977; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 185, 146, 0.3); }
+    .checkout-button:disabled { background-color: #6c757d; cursor: not-allowed; transform: none; }
+    .empty-cart { text-align: center; padding: 80px 20px; background-color: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); }
+    .empty-cart h3 { color: #6c757d; margin-bottom: 16px; }
+    .empty-cart a { display: inline-block; padding: 12px 32px; background-color: #00B992; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s; }
+    .empty-cart a:hover { background-color: #009977; transform: translateY(-2px); }
+    @media (max-width: 992px) { .cart-container { flex-direction: column; } .cart-summary { position: static; width: 100%; } }
+    @media (max-width: 576px) { .cart-card { flex-direction: column; text-align: center; } .cart-card img { margin-right: 0; margin-bottom: 16px; } }
   </style>
 </head>
 <body>
@@ -296,20 +95,26 @@
 
 <main class="cart-container">
 
-  <!-- 장바구니 상품 리스트 -->
   <section class="cart-items" id="cartItems">
-    <!-- 동적으로 렌더링됩니다 -->
+    <div class="text-center p-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">로딩 중...</span>
+      </div>
+    </div>
   </section>
 
-  <!-- 주문 요약 -->
   <aside class="cart-summary">
     <h3>주문 요약</h3>
     <div class="summary-row">
-      <span>총 상품 개수</span>
-      <span id="totalQuantity">0개</span>
+      <span>총 상품 금액</span>
+      <span id="summary-subtotal">₩0</span>
+    </div>
+    <div class="summary-row text-danger">
+      <span>쿠폰 할인</span>
+      <span id="summary-discount">₩0</span>
     </div>
     <div class="summary-row total">
-      <span>총 금액</span>
+      <span>총 결제 금액</span>
       <span id="totalPrice">₩0</span>
     </div>
     <button id="checkoutBtn" class="checkout-button">구매하기</button>
@@ -317,22 +122,53 @@
 
 </main>
 
+<div class="modal fade" id="couponModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">쿠폰 적용</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="modal-coupon-list" class="list-group">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="module">
   import { fetchWithAuth } from '/js/common-api.js';
 
   let cartData = null;
+  let couponModal = null;
+  let currentCartItemId = null; // 현재 쿠폰을 적용하려는 카트 아이템 ID
+
+  // 숫자 파싱 헬퍼 함수 (NaN 방지)
+  function parseCurrency(value) {
+    if (typeof value === 'number') return value;
+    if (!value) return 0;
+    const stringValue = String(value).replace(/,/g, '');
+    const numberValue = parseFloat(stringValue);
+    return isNaN(numberValue) ? 0 : numberValue;
+  }
+
+  // 페이지 로드
+  document.addEventListener("DOMContentLoaded", async () => {
+    // 모달 초기화
+    couponModal = new bootstrap.Modal(document.getElementById('couponModal'));
+    await loadCart();
+  });
 
   // 장바구니 불러오기
-  document.addEventListener("DOMContentLoaded", async () => {
+  async function loadCart() {
     try {
-      const response = await fetchWithAuth("/api/cart", { method: "GET" });
-
+      const response = await fetchWithAuth("/api/cart/detail", { method: "GET" });
       if (response.ok) {
         cartData = await response.json();
         renderCart(cartData);
       } else if (response.status === 401) {
-        // 인증 실패
         alert("로그인이 필요합니다.");
         window.location.href = "/login";
       } else {
@@ -340,182 +176,259 @@
       }
     } catch (err) {
       console.error("장바구니 로드 오류:", err);
-      alert("세션 만료. 다시 로그인해주세요.");
-      window.location.href = "/login";
+      alert("세션 만료 또는 오류 발생.");
     }
-  });
+  }
 
   // 장바구니 렌더링
   function renderCart(cart) {
     const itemsContainer = document.getElementById("cartItems");
 
-    // 장바구니가 비어있는 경우
     if (!cart.items || cart.items.length === 0) {
       itemsContainer.innerHTML = `
-        <div class="empty-cart">
-          <h3>장바구니가 비어있습니다</h3>
-          <p style="color: #6c757d; margin-bottom: 24px;">원하시는 상품을 담아보세요!</p>
-          <a href="/products">쇼핑 계속하기</a>
-        </div>
-      `;
-
-      // 요약 정보 초기화
-      document.getElementById("totalQuantity").textContent = "0개";
+                <div class="empty-cart">
+                  <h3>장바구니가 비어있습니다</h3>
+                  <p style="color: #6c757d; margin-bottom: 24px;">원하시는 상품을 담아보세요!</p>
+                  <a href="/products">쇼핑 계속하기</a>
+                </div>`;
+      document.getElementById("summary-subtotal").textContent = "₩0";
+      document.getElementById("summary-discount").textContent = "₩0";
       document.getElementById("totalPrice").textContent = "₩0";
       document.getElementById("checkoutBtn").disabled = true;
       return;
     }
 
     // 상품 목록 렌더링
-    itemsContainer.innerHTML = cart.items.map(item => `
-      <div class="cart-card" data-product-id="${item.productId}">
-        <img src="${item.photoUrl}" alt="${item.name}">
-        <div class="cart-info">
-          <h3>${item.name}</h3>
-          <p class="product-weight">${item.weightPieces || ''}</p>
-          <p class="product-price">₩${item.price.toLocaleString()}</p>
+    itemsContainer.innerHTML = cart.items.map(item => {
+      const originalPrice = parseCurrency(item.price);
+      // appliedCoupon이 있으면 할인가 적용, 없으면 정가
+      const finalPrice = item.priceAfterDiscount ? parseCurrency(item.priceAfterDiscount) : originalPrice;
+      const totalPrice = finalPrice * item.quantity;
 
-          <div class="cart-actions">
-            <div class="quantity-control">
-              <button type="button" class="quantity-btn" onclick="changeQuantity(this, -1)">−</button>
-              <input type="text" class="quantity-input" value="${item.quantity}" readonly/>
-              <button type="button" class="quantity-btn" onclick="changeQuantity(this, 1)">+</button>
-            </div>
-            <button class="apply-button" data-product-id="${item.productId}">적용</button>
-            <button class="delete-button" data-product-id="${item.productId}">삭제</button>
-          </div>
-        </div>
-      </div>
-    `).join("");
+      // 적용된 쿠폰 정보 HTML
+      let couponInfoHtml = '';
+      if (item.appliedCoupon) {
+        couponInfoHtml = `<div class="applied-coupon-badge">🎟 ${item.appliedCoupon.name} 적용중</div>`;
+      }
 
-    // 요약 정보 표시
-    document.getElementById("totalQuantity").textContent = `${cart.totalQuantity}개`;
-    document.getElementById("totalPrice").textContent = `₩${cart.totalAmount.toLocaleString()}`;
+      return `
+            <div class="cart-card" data-cart-item-id="${item.cartItemId}">
+                <img src="${item.photoUrl}" alt="${item.name}">
+                <div class="cart-info">
+                    <h3>${item.name}</h3>
+                    <p class="product-weight">${item.weightPieces || ''}</p>
+
+                    ${couponInfoHtml}
+
+                    <div class="d-flex align-items-center gap-2">
+                         ${item.appliedCoupon ? `<span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">₩${originalPrice.toLocaleString()}</span>` : ''}
+                         <p class="product-price">₩${finalPrice.toLocaleString()}</p>
+                    </div>
+
+                    <div class="cart-actions">
+                        <div class="quantity-control">
+                            <button type="button" class="quantity-btn" onclick="changeQuantity(this, -1)">−</button>
+                            <input type="text" class="quantity-input" value="${item.quantity}" readonly/>
+                            <button type="button" class="quantity-btn" onclick="changeQuantity(this, 1)">+</button>
+                        </div>
+                        <button class="apply-button" data-product-id="${item.productId}">수량 변경</button>
+
+                        <button class="coupon-btn"
+                                data-product-id="${item.productId}"
+                                data-cart-item-id="${item.cartItemId}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                              <path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.3c.601.212 1 .803 1 1.5s-.399 1.288-1 1.5v.3A1.5 1.5 0 0 0 2.5 9h11a1.5 1.5 0 0 0 1.5-1.5v-.3c-.601-.212-1-.803-1-1.5s.399-1.288 1-1.5v-.3A1.5 1.5 0 0 0 13.5 3z"/>
+                            </svg>
+                            쿠폰
+                        </button>
+
+                        <button class="delete-button" data-product-id="${item.productId}">삭제</button>
+                    </div>
+                </div>
+                <div class="ms-auto text-end">
+                    <h5 style="color: #333;">₩${totalPrice.toLocaleString()}</h5>
+                </div>
+            </div>`;
+    }).join("");
+
+    // 요약 정보 표시 (API 응답 필드명에 맞춰 수정)
+    document.getElementById("summary-subtotal").textContent = `₩${parseCurrency(cart.totalAmount).toLocaleString()}`;
+    document.getElementById("summary-discount").textContent = `- ₩${parseCurrency(cart.totalDiscount).toLocaleString()}`;
+    document.getElementById("totalPrice").textContent = `₩${parseCurrency(cart.finalAmount).toLocaleString()}`;
     document.getElementById("checkoutBtn").disabled = false;
 
-    // 이벤트 리스너 등록
     attachEventListeners();
   }
 
   // 이벤트 리스너 등록
   function attachEventListeners() {
-    // 삭제 버튼
-    document.querySelectorAll(".delete-button").forEach(btn => {
-      btn.addEventListener("click", async () => {
-        if (!confirm("이 상품을 장바구니에서 삭제하시겠습니까?")) {
-          return;
-        }
+    // 삭제, 수량 변경 기존 로직은 유지하고...
 
+    // 1. 쿠폰 버튼 클릭 이벤트
+    document.querySelectorAll(".coupon-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
         const productId = btn.dataset.productId;
-        try {
-          const res = await fetchWithAuth(`/api/cart/remove?productId=${productId}`, {
-            method: "DELETE"
-          });
-
-          if (res.ok) {
-            // 장바구니 새로고침
-            location.reload();
-          } else {
-            alert("삭제에 실패했습니다.");
-          }
-        } catch (err) {
-          console.error("삭제 오류:", err);
-          alert("삭제 중 오류가 발생했습니다.");
-        }
+        const cartItemId = btn.dataset.cartItemId;
+        openCouponModal(productId, cartItemId);
       });
     });
 
-    // 수량 적용 버튼
+    // (기존) 수량 변경 버튼
     document.querySelectorAll(".apply-button").forEach(btn => {
       btn.addEventListener("click", async () => {
         const productId = btn.dataset.productId;
         const card = btn.closest('.cart-card');
         const quantity = parseInt(card.querySelector(".quantity-input").value);
-
-        if (quantity < 1) {
-          alert("수량은 1개 이상이어야 합니다.");
-          return;
-        }
+        if (quantity < 1) { alert("최소 1개 이상이어야 합니다."); return; }
 
         try {
-          btn.disabled = true;
-          btn.textContent = "처리중...";
-
-          const res = await fetchWithAuth(
-              `/api/cart/update?productId=${productId}&quantity=${quantity}`,
-              { method: "PATCH" }
-          );
-
-          if (res.ok) {
-            // 장바구니 새로고침
-            location.reload();
-          } else {
-            alert("수량 변경에 실패했습니다.");
-            btn.disabled = false;
-            btn.textContent = "적용";
-          }
-        } catch (err) {
-          console.error("수량 변경 오류:", err);
-          alert("수량 변경 중 오류가 발생했습니다.");
-          btn.disabled = false;
-          btn.textContent = "적용";
-        }
+          const res = await fetchWithAuth(`/api/cart/update?productId=${productId}&quantity=${quantity}`, { method: "PATCH" });
+          if (res.ok) loadCart();
+          else alert("수량 변경 실패");
+        } catch (e) { console.error(e); }
       });
     });
 
-    // 구매하기 버튼
-    document.getElementById("checkoutBtn").addEventListener("click", async () => {
-      if (!cartData || !cartData.items || cartData.items.length === 0) {
-        alert("장바구니가 비어있습니다.");
-        return;
-      }
+    // (기존) 삭제 버튼
+    document.querySelectorAll(".delete-button").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        if (!confirm("삭제하시겠습니까?")) return;
+        const productId = btn.dataset.productId;
+        try {
+          const res = await fetchWithAuth(`/api/cart/remove?productId=${productId}`, { method: "DELETE" });
+          if (res.ok) loadCart();
+          else alert("삭제 실패");
+        } catch (e) { console.error(e); }
+      });
+    });
 
+    // (기존) 구매하기 버튼
+    document.getElementById("checkoutBtn").addEventListener("click", async () => {
+      const btn = document.getElementById("checkoutBtn");
       try {
-        const btn = document.getElementById("checkoutBtn");
         btn.disabled = true;
         btn.textContent = "주문 생성 중...";
-
-        // isReservation=false로 즉시 주문 생성
-        const res = await fetchWithAuth(`/orders/create?isReservation=false`, {
-          method: "POST"
-        });
-
+        const res = await fetchWithAuth(`/orders/create?isReservation=false`, { method: "POST" });
         if (res.ok) {
           const order = await res.json();
-          const orderId = order.orderId;
-
-          // 주문 상세 페이지로 이동
-          window.location.href = `/order/${orderId}`;
-        } else if (res.status === 401) {
-          alert("로그인이 필요합니다.");
-          window.location.href = "/login";
+          window.location.href = `/order/${order.orderId}`;
         } else {
-          throw new Error("주문 생성 실패");
+          alert("주문 생성 실패");
+          btn.disabled = false;
         }
       } catch (err) {
-        console.error("주문 생성 오류:", err);
-        alert("주문 생성 중 오류가 발생했습니다.");
-        document.getElementById("checkoutBtn").disabled = false;
-        document.getElementById("checkoutBtn").textContent = "구매하기";
+        console.error(err);
+        btn.disabled = false;
       }
     });
   }
 
-  // 수량 변경 함수 (전역)
+  // 쿠폰 모달 열기
+  async function openCouponModal(productId, cartItemId) {
+    currentCartItemId = cartItemId;
+    const listContainer = document.getElementById("modal-coupon-list");
+    listContainer.innerHTML = `<div class="text-center p-3"><div class="spinner-border text-primary"></div></div>`;
+
+    couponModal.show();
+
+    try {
+      // 해당 상품에 적용 가능한 쿠폰 목록 조회
+      const response = await fetchWithAuth(`/api/coupons/applicable-to/${productId}`);
+      const coupons = await response.json();
+
+      // 렌더링
+      renderCouponList(coupons);
+
+    } catch (err) {
+      console.error("쿠폰 로드 실패:", err);
+      listContainer.innerHTML = `<div class="p-3 text-danger">쿠폰 목록을 불러오지 못했습니다.</div>`;
+    }
+  }
+
+  // 모달 내부 리스트 렌더링
+  function renderCouponList(coupons) {
+    const listContainer = document.getElementById("modal-coupon-list");
+    let html = '';
+
+    // "쿠폰 적용 해제" 옵션
+    html += `
+            <a href="#" class="list-group-item list-group-item-action list-group-item-warning d-flex justify-content-between align-items-center"
+               onclick="applyCoupon(null); return false;">
+                <div>
+                    <h6 class="mb-0">선택 안 함 / 적용 해제</h6>
+                    <small>현재 적용된 쿠폰을 제거합니다.</small>
+                </div>
+                <span>🔄</span>
+            </a>
+        `;
+
+    if (!coupons || coupons.length === 0) {
+      html += `<div class="p-3 text-center text-muted">적용 가능한 쿠폰이 없습니다.</div>`;
+    } else {
+      // 쿠폰 목록
+      html += coupons.map(c => {
+        const discountAmt = parseCurrency(c.calculatedDiscountAmount);
+        const finalPrice = parseCurrency(c.finalPriceAfterDiscount);
+        const alreadyUsed = c.isUsed;
+
+        let statusBadge = '';
+        if (c.isApplied) statusBadge = '<span class="badge bg-secondary ms-2">다른 상품에 적용중</span>';
+
+        return `
+                <a href="#" class="list-group-item list-group-item-action coupon-option"
+                   onclick="applyCoupon(${c.userCouponId}); return false;">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h6 class="mb-1">${c.name} ${statusBadge}</h6>
+                        <strong class="text-danger">-${discountAmt.toLocaleString()}원</strong>
+                    </div>
+                    <p class="mb-1 text-muted small">최종가: <strong>₩${finalPrice.toLocaleString()}</strong></p>
+                    <small class="text-muted">조건: ${parseCurrency(c.minOrderAmount).toLocaleString()}원 이상</small>
+                </a>
+                `;
+      }).join('');
+    }
+
+    listContainer.innerHTML = html;
+  }
+
+  // 쿠폰 적용 API 호출
+  window.applyCoupon = async (userCouponId) => {
+    if (!currentCartItemId) return;
+
+    const actionName = userCouponId ? "적용" : "해제";
+
+    const body = {
+      cartItemId: parseInt(currentCartItemId),
+      userCouponId: userCouponId ? parseInt(userCouponId) : null
+    };
+
+    try {
+      const response = await fetchWithAuth("/api/coupons/cart/item/coupon", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+
+      if (response.ok) {
+        alert(`쿠폰이 ${actionName}되었습니다.`);
+        couponModal.hide();
+        loadCart(); // 장바구니 재조회 (가격 반영)
+      } else {
+        const msg = await response.text();
+        alert(`쿠폰 ${actionName} 실패: ` + msg);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("오류가 발생했습니다.");
+    }
+  };
+
+  // 전역 함수 (수량 변경용)
   window.changeQuantity = (btn, delta) => {
     const input = btn.parentElement.querySelector(".quantity-input");
     let value = parseInt(input.value) + delta;
-
-    // 최소값 1로 제한
-    if (value < 1) {
-      value = 1;
-    }
-
+    if (value < 1) value = 1;
     input.value = value;
-
-    // 수량 버튼 활성화/비활성화
-    const minusBtn = btn.parentElement.querySelector('.quantity-btn:first-child');
-    minusBtn.disabled = (value <= 1);
   };
 </script>
 

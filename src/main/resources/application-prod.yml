@@ -13,6 +13,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate  # 배포 시 안전하게
+    defer-datasource-initialization: false  # 운영은 false
 
 server:
   port: 8080
@@ -21,3 +22,13 @@ logging:
   level:
     root: info
     est.oremi.backend12: warn
+
+  # application-dev.yml 또는 application.yml
+jwt:
+  # 보안을 위해 256비트(32글자) 이상의 임의의 문자열을 사용해야 합니다.
+  secret: ${JWT_SECRET_KEY}
+
+  # 토큰 만료 시간 (단위: 밀리초)
+  access-token-expiration-milliseconds: ${JWT_ACCESS_EXPIRED_TIME}  # 예: 1시간 (60분 * 60초 * 1000ms)
+  refresh-token-expiration-milliseconds: ${JWT_REFRESH_EXPIRED_TIME} # 예: 14일
+

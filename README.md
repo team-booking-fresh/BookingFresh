@@ -35,8 +35,13 @@
 #### External API
 <img src="https://img.shields.io/badge/openai-412991?style=for-the-badge&logo=openai&logoColor=white"> <img src="https://img.shields.io/badge/alan-0081A5?style=for-the-badge&logoColor=white">
 #### Deployment/DevOps
-  
+
+#### Tools
+  <img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white"> <img src="https://img.shields.io/badge/swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=white">
+
+
 ## 시스템 아키텍처
+<img width="760" height="620" alt="화면 캡처 2025-11-20 162830" src="https://github.com/user-attachments/assets/5186375b-9c99-44f9-86c1-f489bb2b4525" />
 
 ## ERD 
 - https://www.erdcloud.com/d/MepTrpZJoc49NjZFy
@@ -110,6 +115,7 @@ src
 | **컬렉션 변수 복수형** | **복수형 사용 권장** |
 | **파일명** | 클래스/모듈명과 동일하게 유지 |
 | **패키지명** | 소문자, 언더스코어 없이 |
+
 
 
 

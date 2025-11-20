@@ -13,8 +13,48 @@
 ## 시스템 아키텍처
 
 ## ERD 
+- https://www.erdcloud.com/d/MepTrpZJoc49NjZFy
+<img width="2000" height="1049" alt="image (7)" src="https://github.com/user-attachments/assets/243a7d9e-7e18-44f5-a492-69aedeabe20a" />
 
 ## 디렉토리 구조
+```
+src
+ └── main
+     ├── java/est/oremi/backend12/bookingfresh
+     │   ├── config
+     │   │   ├── jwt
+     │   │   ├── sessionConfig
+     │   │   └── WebSecurityConfig.java
+     │   │
+     │   ├── domain
+     │   │   ├── cart
+     │   │   ├── consumer
+     │   │   ├── coupon
+     │   │   ├── mail
+     │   │   ├── order
+     │   │   ├── product
+     │   │   └── session
+     │   │
+     │   ├── exception
+     │   │
+     │   └── BookingFreshApplication.java
+     │
+     └── resources
+         ├── static
+         │   ├── images
+         │   └── js
+         │
+         ├── templates
+         │   ├── ai
+         │   ├── authentication
+         │   ├── home.html
+         │   └── navbar.html
+         │
+         ├── application.properties
+         ├── application.yml
+         ├── application-dev.yml
+         └── application-prod.yml
+```
 
 ## 개발 컨벤션
 
@@ -44,4 +84,5 @@
 | **컬렉션 변수 복수형** | **복수형 사용 권장** |
 | **파일명** | 클래스/모듈명과 동일하게 유지 |
 | **패키지명** | 소문자, 언더스코어 없이 |
+
 

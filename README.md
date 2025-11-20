@@ -35,7 +35,7 @@
 #### External API
 <img src="https://img.shields.io/badge/openai-412991?style=for-the-badge&logo=openai&logoColor=white"> <img src="https://img.shields.io/badge/alan-0081A5?style=for-the-badge&logoColor=white">
 #### Deployment/DevOps
-
+<img src="https://img.shields.io/badge/AWS-FFB71B?style=for-the-badge&logoColor=white">  <img src="https://img.shields.io/badge/github actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white">
 #### Tools
   <img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white"> <img src="https://img.shields.io/badge/swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=white">
 
@@ -115,6 +115,7 @@ src
 | **컬렉션 변수 복수형** | **복수형 사용 권장** |
 | **파일명** | 클래스/모듈명과 동일하게 유지 |
 | **패키지명** | 소문자, 언더스코어 없이 |
+
 
 
 

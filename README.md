@@ -41,7 +41,8 @@
 
 
 ## 시스템 아키텍처
-<img width="760" height="620" alt="화면 캡처 2025-11-20 162830" src="https://github.com/user-attachments/assets/5186375b-9c99-44f9-86c1-f489bb2b4525" />
+<img width="764" height="621" alt="화면 캡처 2025-11-20 174501" src="https://github.com/user-attachments/assets/3cbd4387-7c05-40b7-984e-eba82cd76e13" />
+
 
 ## ERD 
 - https://www.erdcloud.com/d/MepTrpZJoc49NjZFy
@@ -115,6 +116,7 @@ src
 | **컬렉션 변수 복수형** | **복수형 사용 권장** |
 | **파일명** | 클래스/모듈명과 동일하게 유지 |
 | **패키지명** | 소문자, 언더스코어 없이 |
+
 
 
 

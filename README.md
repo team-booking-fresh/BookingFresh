@@ -1,5 +1,6 @@
-﻿# BookingFresh
--  🥬 Spring Boot 기반 식재료 추천 · 장보기 · 배송시간 예약 서비스 
+
+ # BookingFresh
+### 🥬 Spring Boot 기반 식재료 추천 · 장보기 · 배송시간 예약 서비스 
 ## 🚀 배포 주소 
 - 프로덕션: https://bookingfresh.duckdns.org/
 - API 명세: http://43.200.101.128:8080/swagger-ui/index.html#/
@@ -8,6 +9,8 @@
 - https://www.notion.so/oreumi/BookingFresh-2afebaa8982b802e8d7dda5104361c45
 ## 기능 요약 
 #### 로그인/인증
+- 회원가입, JWT 토큰 인증
+- 마이페이지- 내 정보 관리
 
 #### 식자재 주문/배송예약
 
@@ -105,6 +108,7 @@ src
 | **컬렉션 변수 복수형** | **복수형 사용 권장** |
 | **파일명** | 클래스/모듈명과 동일하게 유지 |
 | **패키지명** | 소문자, 언더스코어 없이 |
+
 
 
 
